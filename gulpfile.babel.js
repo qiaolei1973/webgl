@@ -9,7 +9,7 @@ import WebpackDevServer from 'webpack-dev-server';
 
 import webpackConfig from './webpack/webpack.config';
 
-const EXPERIMENTS_DIR = path.join(__dirname, 'src/experiments');
+const EXPERIMENTS_DIR = path.join(__dirname, './src/experiments');
 
 const getExperiments = () => {
     return new Promise((resolve, reject) => {
@@ -36,27 +36,27 @@ const build = experiments => {
     });
 };
 
-const dev = experiments => {
-    const PORT = 8001;
-    const HOST = 'localhost';
-    return new Promise((resolve, reject) => {
-        const config = webpackConfig(experiments, 'serve');
-        const compiler = webpack(config);
-        const devServerConfig = {
-            stats: { colors: true },
-            setup: experiment => {
-                experiment.use('/dist', express.static('./src'));
-            }
-        };
-        new WebpackDevServer(compiler, devServerConfig).listen(PORT, HOST, error => {
-            if (error) {
-                return reject(error);
-            }
-            gutil.log('[webpack:serve]', `http://${HOST}:${PORT}`);
-            return resolve();
-        });
-    });
-};
+// const dev = experiments => {
+//     const PORT = 8001;
+//     const HOST = 'localhost';
+//     return new Promise((resolve, reject) => {
+//         const config = webpackConfig(experiments, 'serve');
+//         const compiler = webpack(config);
+//         const devServerConfig = {
+//             stats: { colors: true },
+//             setup: experiment => {
+//                 experiment.use('/dist', express.static('./src'));
+//             }
+//         };
+//         new WebpackDevServer(compiler, devServerConfig).listen(PORT, HOST, error => {
+//             if (error) {
+//                 return reject(error);
+//             }
+//             gutil.log('[webpack:serve]', `http://${HOST}:${PORT}`);
+//             return resolve();
+//         });
+//     });
+// };
 
 gulp.task('clean', () => gulp.src(['./dist', './index.html'], { read: false }).pipe(clean()));
 
@@ -66,8 +66,12 @@ gulp.task('build', ['clean'], cb => {
         .catch(cb);
 });
 
-gulp.task('dev', cb => {
-    getExperiments()
-        .then(dev)
-        .catch(cb);
+// gulp.task('dev', cb => {
+//     getExperiments()
+//         .then(dev)
+//         .catch(cb);
+// });
+
+gulp.task('default',()=>{
+    console.log('hello');
 });

@@ -1,8 +1,8 @@
 {
   "name": "webgl-experiments",
   "version": "1.0.0",
-  "description": "webgl study demos.",
-  "main": "webpack.config.js",
+  "description": "webgl study demos",
+  "main": "gulpfile.babel.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,9 +12,7 @@
   },
   "keywords": [
     "webgl",
-    "visualization",
-    "threejs",
-    "demos"
+    "three"
   ],
   "author": "qiaolei",
   "license": "ISC",
@@ -23,6 +21,11 @@
   },
   "homepage": "https://github.com/qiaolei1973/webgl#readme",
   "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/register": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "babel-preset-env": "^1.7.0",
     "copy-webpack-plugin": "^4.5.2",
     "express": "^4.16.3",
     "gulp": "^3.9.1",
@@ -30,6 +33,6 @@
     "gulp-util": "^3.0.8",
     "lodash": "^4.17.11",
     "webpack": "^4.19.1",
-    "webpack-dev-server": "^3.1.8"
+    "webpack-dev-server": "^3.1.9"
   }
 }
