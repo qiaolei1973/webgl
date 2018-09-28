@@ -5,7 +5,7 @@ import gutil from 'gulp-util';
 import clean from 'gulp-clean';
 import express from 'express';
 import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+import middleware from 'webpack-dev-middleware';
 
 import webpackConfig from './webpack/webpack.config';
 
@@ -37,18 +37,22 @@ const build = experiments => {
 };
 
 const dev = experiments => {
-    const PORT = 8001;
+    const PORT = 8002;
     const HOST = 'localhost';
+    const app = express();
+
     return new Promise((resolve, reject) => {
         const config = webpackConfig(experiments, 'serve');
         const compiler = webpack(config);
-        const devServerConfig = {
-            stats: { colors: true },
-            setup: experiment => {
-                experiment.use('/dist', express.static('./src'));
-            }
-        };
-        new WebpackDevServer(compiler, devServerConfig).listen(PORT, HOST, error => {
+        app.use(
+            middleware(compiler, {
+                hot: true,
+                inline: true,
+                stats: { colors: true }
+            })
+        );
+        app.use(express.static('./public'));
+        app.listen(PORT, HOST, error => {
             if (error) {
                 return reject(error);
             }

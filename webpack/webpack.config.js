@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const rootDir = path.resolve(__dirname, '..');
 
@@ -10,6 +9,20 @@ const transformIndexExperiments = experimentConfigs => {
     return content => {
         const template = _.template(content);
         return template({ experiments: experimentConfigs });
+    };
+};
+
+const transformIndexExperiment = (experiment, config) => {
+    const scripts = config.scripts || [];
+    const styles = config.styles || [];
+    return content => {
+        const template = _.template(content);
+        return template({
+            ...config,
+            experiment,
+            scripts,
+            styles
+        });
     };
 };
 
@@ -30,11 +43,13 @@ export default (experiments, buildType) => {
         experimentConfigs.push(experimentConfig);
 
         plugins.push(
-            new HtmlWebpackPlugin({
-                template: path.resolve(rootDir, 'public/index.html'),
-                filename: `experiments/${experiment}/index.html`,
-                chunks: [experiment]
-            })
+            new CopyWebpackPlugin([
+                {
+                    from: path.join(rootDir, 'public/index-experiment.html'),
+                    to: path.join(rootDir, `dist/experiments/${experiment}/index.html`),
+                    transform: transformIndexExperiment(experiment, experimentConfig)
+                }
+            ])
         );
     });
     plugins.push(
@@ -56,8 +71,10 @@ export default (experiments, buildType) => {
         output: {
             path: path.resolve(rootDir, 'dist'),
             filename: 'experiments/[name]/bundle.js',
-            // publicPath: path.resolve(rootDir, 'public')
+            publicPath: path.resolve(rootDir, 'public')
         },
+        // devtool: 'cheap-source-map',
+        devtool: 'eval',
         module: {
             rules: [
                 {
