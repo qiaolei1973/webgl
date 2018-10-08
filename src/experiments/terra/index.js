@@ -1,4 +1,5 @@
 import Loader from './loader';
+import World from './world';
 
 const loader = new Loader();
 loader.load({
@@ -6,3 +7,5 @@ loader.load({
         {name:'grass.vert',url:'/shader/grass.frag.glsl'}
     ]
 })
+
+const world = new World();
