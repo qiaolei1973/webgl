@@ -54,10 +54,10 @@ export default (experiments, buildType) => {
     });
     plugins.push(
         new CopyWebpackPlugin([
-            {
-                from: path.join(rootDir, 'src/assets'),
-                to: path.join(rootDir, 'dist/assets')
-            },
+            // {
+            //     from: path.join(rootDir, 'src/assets'),
+            //     to: path.join(rootDir, 'dist/assets')
+            // },
             {
                 from: path.join(rootDir, 'public/index-experiments.html'),
                 to: path.join(rootDir, `dist/index.html`),
